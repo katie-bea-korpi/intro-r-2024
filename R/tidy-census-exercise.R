@@ -104,6 +104,21 @@ p + geom_point() +
 cor(comm_19_22$wft_chg, comm_19_22$transit_chg)
 
 # model it----
+# model formula is depvar ~ 1 + X1 + X2 + .....
 m <- lm(transit_chg ~ wft_chg,
         data = comm_19_22)
 summary(m)
+
+# model is an object ready for re-use!!
+head(m$model)  # model comes data included!
+
+scen1 <- comm_19_22 |>
+  mutate(wft_chg = wft_chg *1.5)
+
+scen1_pred <- predict(m, newdata = scen1)
+
+# difference in total daily transit impact from 50% WFH change
+sum(comm_19_22$transit_chg)
+sum(scen1_pred)
+
+# update(model,data=) function re-estimates model on new data
